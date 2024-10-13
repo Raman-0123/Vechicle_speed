@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Speed Alerts</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+#notifications {
+    margin-top: 20px;
+}
+
+.notification {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+    margin-bottom: 15px;
+    padding: 10px;
+    line-height: 1.5;
+    border-radius: 5px;
+}
+
+.notification p {
+    margin: 0;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vehicle Speed Alerts</h1>
+        <div id="notifications"></div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Replace with the endpoint for your Netlify serverless function
+const notificationEndpoint = '/.netlify/functions/notify';  // No need for full URL if hosted on the same domain
+
+// Fetch notifications from the serverless function
+async function fetchNotifications() {
+    try {
+        const response = await fetch(notificationEndpoint);
+        const notifications = await response.json();
+
+        const notificationDiv = document.getElementById('notifications');
+        notificationDiv.innerHTML = '';
+
+        notifications.forEach(notification => {
+            const notificationElement = document.createElement('div');
+            notificationElement.classList.add('notification');
+
+            notificationElement.innerHTML = `
+                <p><strong>Vehicle:</strong> ${notification.number_plate}</p>
+                <p><strong>Speed:</strong> ${notification.speed} km/h</p>
+                <p><strong>Date/Time:</strong> ${notification.timestamp}</p>
+            `;
+            notificationDiv.appendChild(notificationElement);
+        });
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+}
+
+// Poll for new notifications every 5 seconds
+setInterval(fetchNotifications, 5000);
+
+// Fetch notifications on page load
+fetchNotifications();
+
+    </script>
+</body>
+</html>

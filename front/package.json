@@ -1,0 +1,25 @@
+{
+    "name": "vehicle-speed-alerts",
+    "version": "1.0.0",
+    "description": "A web app to display vehicle speed alerts using AWS SNS and DynamoDB.",
+    "main": "functions/notify.js",
+    "scripts": {
+      "start": "netlify dev",
+      "build": "npm run build"
+    },
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+      "axios": "^0.21.1",
+      "body-parser": "^1.19.0",
+      "express": "^4.17.1",
+      "aws-sdk": "^2.1057.0"
+    },
+    "devDependencies": {
+      "netlify-cli": "^12.0.0"
+    },
+    "engines": {
+      "node": ">=14"
+    }
+  }
+  
